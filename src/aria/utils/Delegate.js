@@ -330,6 +330,10 @@ module.exports = Aria.classDefinition({
                 this.rootListener = ariaCoreBrowser.isOldIE ? body : Aria.$window;
                 this.__delegateMapping = {};
                 var utilEvent = ariaUtilsEvent, index, l;
+                    utilEvent.addListener(body, 'mouseup', {
+                        fn : function(){console.log('MOUSEUP!!!')},
+                        scope : this
+                    });
                 for (index = 0, l = this.delegatedOnBody.length; index < l; index++) {
                     utilEvent.addListener(body, this.delegatedOnBody[index], {
                         fn : this.delegate,
@@ -344,11 +348,19 @@ module.exports = Aria.classDefinition({
                 }
             }
             var id = this.__idMgr.getId();
+            // console.log('getId: ', id);
             while (this._changed && this._changed[id]) {
                 this._changed[id] = false;
                 id = this.__idMgr.getId();
+                // console.log('getId2: ', id);
             }
+            // if(id==='d4') debugger;            
+            if(id==='d4') debugger;            
             this.__delegateMapping[id] = new ariaUtilsCallback(handler);
+            var tmpDomId = this.__delegateMapping[id]._scope._domId;
+            if( tmpDomId == 'tpl0_testInnerMacroSection' || tmpDomId == 'tpl0_width' || tmpDomId == 'w1' || tmpDomId == 'w0'){
+                console.log('ADD CALLBACK: ', id, ' ', this.__delegateMapping[id]._scope._domId);
+            }
             return id;
         },
 
@@ -357,6 +369,7 @@ module.exports = Aria.classDefinition({
          * @param {String} id
          */
         getMarkup : function (id) {
+            if(id==='d4') debugger;
             var output = this.delegateExpando + "='" + id + "'";
 
             // for iOS, see: https://developer.apple.com/library/IOS/documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html#//apple_ref/doc/uid/TP40006511-SW3
@@ -373,6 +386,7 @@ module.exports = Aria.classDefinition({
          * @param {string} id
          */
         addExpando : function (domElt, id) {
+            console.log('addExpando: ', id + ' : ' + domElt.id);
             domElt.setAttribute(this.delegateExpando, id);
 
             // for iOS, refer to method getMarkup
@@ -479,11 +493,13 @@ module.exports = Aria.classDefinition({
             if (this._changed) {
                 this._changed[id] = true;
             }
-
+            if(id==='d9' || id==='d4' || id==='d7' || id==='d10' || id==='d11') console.log('REMOVE CALLBACK: ', id);
+            if(id==='d4') debugger;
             if (this.__delegateMapping) {
                 this.__delegateMapping[id].$dispose();
                 delete this.__delegateMapping[id];
                 this.__idMgr.releaseId(id);
+                // console.log('releaseId: ', id);
             }
         },
 
@@ -492,6 +508,9 @@ module.exports = Aria.classDefinition({
          * @param {Object} evt
          */
         delegate : function (evt) {
+            // if(evt.srcElement && evt.srcElement.tagName==='TD' && evt.type==='mouseup') debugger;
+            var old = evt;
+            if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  console.log('DELEGATE D4');
             if (!this.__delegateMapping) {
                 // there is no event listener
                 if (evt.$DomEvent) {
@@ -515,11 +534,14 @@ module.exports = Aria.classDefinition({
             // flag to distinguish elements defined through aria templates
             var ATflag = false; // stays false if the target has not been generated with AT
 
+            if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  console.log('DELEGATE 1');
             // retrieve dom that might contain delegation
+            if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  debugger;
             while (depth && target && target != stopper) {
                 if (target.attributes) {
                     expandoValue = target.attributes[this.delegateExpando];
                     if (expandoValue) {
+                        if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  debugger;
                         ATflag = true;
                         expandoValue = expandoValue.value;
                         cacheStack = this.__stackCache[expandoValue];
@@ -551,6 +573,7 @@ module.exports = Aria.classDefinition({
                 this._changed = {};
             }
 
+            if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  console.log('DELEGATE 2');
             for (var i = 0, l = stack.length; i < l; i++) {
                 delegateConfig = stack[i];
                 expandoValue = delegateConfig.expandoValue;
@@ -574,7 +597,9 @@ module.exports = Aria.classDefinition({
                 // only stop bubbling if callback returned false -> strict equal
                 // Callback might be null has a sub delegation might have destroyed it
                 var result;
+                if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  console.log('DELEGATE 3: ', expandoValue, ' ', callback._scope._domId);
                 if (callback) {
+                    if(old.srcElement && old.srcElement.tagName==='TD' && old.type==='mouseup')  debugger;
                     try {
                         result = callback.call(evt);
                     } catch (e) {

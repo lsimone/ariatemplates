@@ -274,6 +274,7 @@ var ariaCoreBrowser = require("../core/Browser");
                         // click, mousedown or touchend, it is analised in order to avoid ghost click's side effects
                         if ((e.type != "click" && e.type != "mousedown" && e.type != "touchend")
                                 || !aria.touch || !aria.touch.ClickBuster || aria.touch.ClickBuster.preventGhostClick(e)) {
+                            // if(e.type=='mouseup') console.log('Event.wrapped...');
                             return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
                         }
                     };

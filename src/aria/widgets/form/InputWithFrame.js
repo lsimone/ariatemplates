@@ -87,6 +87,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _init : function () {
+            console.log('InputWithFrame._init');
             this.$Input._init.call(this);
             var label = this.getLabel();
             if (label) {

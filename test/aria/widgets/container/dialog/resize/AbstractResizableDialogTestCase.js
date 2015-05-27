@@ -48,7 +48,7 @@ Aria.classDefinition({
     $prototype : {
         startResizeTest : function () {
             aria.core.Timer.addCallback({
-                fn : this._afterFirstDialogShow,
+                fn : this._Wresize,
                 scope : this,
                 delay : 1000
             });
@@ -283,6 +283,9 @@ Aria.classDefinition({
 
         },
         _Wresize : function () {
+            // debugger;
+            // console.log('BASE HTML: ', document.body.innerHTML);
+            console.log('*****BEFORE DRAG');
             var handleEle = this._getHandle("firstDialog", 4);
             this.handleEle = handleEle.handle;
             var position = aria.utils.Dom.getGeometry(this.handleEle);
@@ -302,7 +305,7 @@ Aria.classDefinition({
             this.data.firstDialog.width -= 8;
 
             this.synEvent.execute([["drag", options, from]], {
-                fn : this._checkWSize,
+                fn : this._end,
                 scope : this
             });
 
@@ -392,6 +395,8 @@ Aria.classDefinition({
         },
 
         _end : function () {
+            console.log('AFTER DRAG*****');
+            // console.log('END HTML: ', document.body.innerHTML);
             this.notifyTemplateTestEnd();
         }
     }

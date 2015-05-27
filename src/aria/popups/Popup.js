@@ -201,6 +201,8 @@ module.exports = Aria.classDefinition({
         this.reference = null;
         if (this._delegateId) {
             ariaUtilsDelegate.remove(this._delegateId);
+            this._delegateId = null;
+            debugger;
         }
         if (this.section) {
             this.section.$unregisterListeners(this);

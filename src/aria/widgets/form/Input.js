@@ -138,6 +138,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _init : function () {
+            console.log('Input._init');
             var elt = this._getInputMarkupDomElt();
             if (elt) {
                 this._initInputMarkup(elt);
@@ -230,6 +231,8 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _getInputLabelMarkupDomElt : function () {
+            debugger;
+            console.log('Input._getInputLabelMarkupDomElt');
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
             if (showLabel) {
                 var dom = this.getDom();

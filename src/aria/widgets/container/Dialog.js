@@ -655,6 +655,8 @@ module.exports = Aria.classDefinition({
          * Hides and destroys the dialog
          */
         close : function () {
+            console.log('DIALOG CLOSE $$$$');
+            debugger;
             var cfg = this._cfg;
             if (this._popup) {
 

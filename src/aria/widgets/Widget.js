@@ -360,6 +360,7 @@ module.exports = Aria.classDefinition({
                     fn : this.delegate,
                     scope : this
                 });
+                debugger;
             }
 
             out.write(delegateManager.getMarkup(this._delegateId) + " ");
@@ -508,6 +509,7 @@ module.exports = Aria.classDefinition({
          * Initialization method called by the delegate engine when the DOM is loaded
          */
         initWidget : function () {
+            console.log('Widget.initWidget');
             this._linkToTooltipWidget();
             this._registerBindings();
             if (this._directInit && this._hasMarkup) {
@@ -530,6 +532,7 @@ module.exports = Aria.classDefinition({
             dom.__widget = this;
             this._domElt = dom;
             this._init();
+            console.log('Widget.initWidgetDom: ', this._domId);
         },
 
         /**
@@ -724,13 +727,15 @@ module.exports = Aria.classDefinition({
          * @return {Boolean} event bubbles ?
          */
         delegate : function (evt) {
+            // console.log('Widget.delegate');
             var target = evt.delegateTarget;
-
+            if(this._domId==='tpl0_width') console.log('Widget.delegate w0')
             if (!(this._cfg.disabled || this._cfg.readOnly)) {
                 if (!this._initDone) {
                     if (evt.type == "contentchange") {
                         this.__initWhileContentChange = true;
                     }
+                    console.log('Widget.delegate !this._initDone: ', this._domId);
                     this.initWidgetDom(target);
                 }
                 var handlerName = "_dom_on" + evt.type;
@@ -747,6 +752,7 @@ module.exports = Aria.classDefinition({
          * @return {HTMLElement}
          */
         getDom : function () {
+            console.log('Widget.getDom');
             if (!this._domElt && this._domReady) {
                 this.initWidgetDom();
             }
